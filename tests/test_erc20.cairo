@@ -1,13 +1,11 @@
 use starknet::{contract_address_const, ContractAddress, testing};
 use snforge_std::{declare, start_prank, stop_prank, ContractClassTrait, CheatTarget};
 use starknet_token::erc20::{IErc20TokenSafeDispatcher, IErc20TokenSafeDispatcherTrait};
-use tests::utils::constants::{
-    OWNER, SPENDER, RECIPIENT, SUPPLY, VALUE, JEDISWAP_TESTNET
-};
+use tests::utils::constants::{OWNER, SPENDER, RECIPIENT, SUPPLY, VALUE, ZERO};
 
 fn deploy_contract(name: felt252) -> ContractAddress {
     let contract = declare(name);
-    contract.deploy(@array![OWNER().into(), JEDISWAP_TESTNET().into()]).unwrap()
+    contract.deploy(@array![OWNER().into(), ZERO().into()]).unwrap()
 }
 
 #[test]
