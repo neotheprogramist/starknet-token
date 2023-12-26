@@ -8,15 +8,15 @@ fn JEDISWAP_DEPLOYER_CONTRACT() -> ContractAddress {
 }
 
 fn ETH_TOKEN_CONTRACT() -> ContractAddress {
-    contract_address_const::<0x033478650b3b71be225cbad55fda8a590022eea17be3212d0ccbf3d364b1e448>()
+    contract_address_const::<0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7>()
 }
 fn ETH_TOKEN_DEPLOYER_CONTRACT() -> ContractAddress {
-    contract_address_const::<0x008718bf271493c557974f8aab1179f431a0ca956c74e83f8ec4c37834f0f9ce>()
+    contract_address_const::<0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7>()
 }
 
 fn USDC_TOKEN_CONTRACT() -> ContractAddress {
-    contract_address_const::<0x06eda767a143da12f70947192cd13ee0ccc077829002412570a88cd6539c1d85>()
+    contract_address_const::<0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8>()
 }
 fn USDC_TOKEN_DEPLOYER_CONTRACT() -> ContractAddress {
-    contract_address_const::<0x008718bf271493c557974f8aab1179f431a0ca956c74e83f8ec4c37834f0f9ce>()
+    contract_address_const::<0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8>()
 }
