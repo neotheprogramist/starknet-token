@@ -14,6 +14,11 @@ starknet = "2.4.1"
 casm = true
 
 [[tool.snforge.fork]]
+name = "SN_MAINNET"
+url = "https://starknet-mainnet.public.blastapi.io/rpc/v0_6"
+block_id.number = "482280"
+
+[[tool.snforge.fork]]
 name = "SN_TESTNET"
 url = "https://starknet-testnet.public.blastapi.io/rpc/v0_6"
 block_id.number = "923700"
