@@ -12,3 +12,13 @@ starknet = "2.4.1"
 
 [[target.starknet-contract]]
 casm = true
+
+[[tool.snforge.fork]]
+name = "SN_TESTNET"
+url = "https://starknet-testnet.public.blastapi.io/rpc/v0_6"
+block_id.number = "923700"
+
+[[tool.snforge.fork]]
+name = "SN_SEPOLIA"
+url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_6"
+block_id.number = "11900"

@@ -7,7 +7,7 @@ use starknet_token::IErc20TokenSafeDispatcher;
 use starknet_token::IErc20TokenSafeDispatcherTrait;
 
 use tests::utils::constants::{
-    ZERO, OWNER, SPENDER, RECIPIENT, NAME, SYMBOL, DECIMALS, SUPPLY, VALUE
+    OWNER, SPENDER, RECIPIENT, SUPPLY, VALUE, JEDISWAP_TESTNET, JEDISWAP_MAINNET
 };
 
 fn get_swap_contract() -> ContractAddress {
@@ -38,6 +38,31 @@ fn test_mint_balance() {
 
 #[test]
 fn test_transfer() {
+    let contract_address = deploy_contract('Erc20Token');
+
+    let safe_dispatcher = IErc20TokenSafeDispatcher { contract_address };
+
+    start_prank(CheatTarget::One(contract_address), OWNER());
+    safe_dispatcher.mint(SPENDER(), SUPPLY).unwrap();
+    stop_prank(CheatTarget::One(contract_address));
+
+    let balance_before = safe_dispatcher.balance_of(SPENDER()).unwrap();
+    assert(balance_before == SUPPLY, 'Invalid balance');
+
+    start_prank(CheatTarget::One(contract_address), SPENDER());
+    safe_dispatcher.transfer(RECIPIENT(), VALUE).unwrap();
+    stop_prank(CheatTarget::One(contract_address));
+
+    let balance_after = safe_dispatcher.balance_of(SPENDER()).unwrap();
+    assert(balance_after == SUPPLY - VALUE, 'Invalid balance');
+
+    let balance_after = safe_dispatcher.balance_of(RECIPIENT()).unwrap();
+    assert(balance_after == VALUE, 'Invalid balance');
+}
+
+#[test]
+#[fork("SN_TESTNET")]
+fn test_fork_transfer() {
     let contract_address = deploy_contract('Erc20Token');
 
     let safe_dispatcher = IErc20TokenSafeDispatcher { contract_address };
