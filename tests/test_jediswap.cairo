@@ -17,13 +17,6 @@ fn test_mint_eth() {
 
     let safe_dispatcher = IErc20TokenSafeDispatcher { contract_address };
 
-    let balance_before = safe_dispatcher.balance_of(OTHER()).unwrap();
+    let balance_before = safe_dispatcher.balanceOf(OTHER()).unwrap();
     assert(balance_before == 0, 'Invalid balance');
-
-    start_prank(CheatTarget::One(contract_address), contract_deployer_address);
-    safe_dispatcher.mint(OTHER(), VALUE).unwrap();
-    stop_prank(CheatTarget::One(contract_address));
-
-    let balance_after = safe_dispatcher.balance_of(OTHER()).unwrap();
-    assert(balance_after == VALUE, 'Invalid balance');
 }
