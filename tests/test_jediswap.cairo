@@ -1,21 +1,29 @@
 use starknet::{contract_address_const, ContractAddress, testing};
 use snforge_std::{declare, start_prank, stop_prank, ContractClassTrait, CheatTarget};
-use starknet_token::jediswap::{IRouterSafeDispatcher, IRouterSafeDispatcherTrait};
-use tests::utils::constants::{OWNER, SPENDER, RECIPIENT, SUPPLY, VALUE, JEDISWAP_MAINNET};
-
-fn deploy_contract(name: felt252) -> ContractAddress {
-    let contract = declare(name);
-    contract.deploy(@array![]).unwrap()
-}
+use starknet_token::{
+    erc20::{IErc20TokenSafeDispatcher, IErc20TokenSafeDispatcherTrait},
+    jediswap::{IRouterSafeDispatcher, IRouterSafeDispatcherTrait},
+};
+use tests::utils::{
+    constants::{OTHER, VALUE},
+    mainnet::{ETH_TOKEN_CONTRACT, ETH_TOKEN_DEPLOYER_CONTRACT, JEDISWAP_CONTRACT},
+};
 
 #[test]
 #[fork("SN_MAINNET")]
-fn test_fork_router_interface() {
-    let contract_address = JEDISWAP_MAINNET();
+fn test_mint_eth() {
+    let contract_address = ETH_TOKEN_CONTRACT();
+    let contract_deployer_address = ETH_TOKEN_DEPLOYER_CONTRACT();
 
-    let safe_dispatcher = IRouterSafeDispatcher { contract_address };
+    let safe_dispatcher = IErc20TokenSafeDispatcher { contract_address };
 
-    let result = safe_dispatcher.factory().unwrap();
+    let balance_before = safe_dispatcher.balance_of(OTHER()).unwrap();
+    assert(balance_before == 0, 'Invalid balance');
 
-    println!("{:?}", result);
+    start_prank(CheatTarget::One(contract_address), contract_deployer_address);
+    safe_dispatcher.mint(OTHER(), VALUE).unwrap();
+    stop_prank(CheatTarget::One(contract_address));
+
+    let balance_after = safe_dispatcher.balance_of(OTHER()).unwrap();
+    assert(balance_after == VALUE, 'Invalid balance');
 }

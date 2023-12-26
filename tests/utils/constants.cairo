@@ -1,7 +1,4 @@
-use starknet::ClassHash;
-use starknet::ContractAddress;
-use starknet::class_hash_const;
-use starknet::contract_address_const;
+use starknet::{ClassHash, ContractAddress, class_hash_const, contract_address_const};
 
 const NAME: felt252 = 'NAME';
 const SYMBOL: felt252 = 'SYMBOL';
@@ -18,13 +15,6 @@ const SALT: felt252 = 'SALT';
 const SUCCESS: felt252 = 123123;
 const FAILURE: felt252 = 456456;
 
-fn JEDISWAP_MAINNET() -> ContractAddress {
-    contract_address_const::<0x041fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023>()
-}
-
-fn JEDISWAP_TESTNET() -> ContractAddress {
-    contract_address_const::<0x02bcc885342ebbcbcd170ae6cafa8a4bed22bb993479f49806e72d96af94c965>()
-}
 
 fn ADMIN() -> ContractAddress {
     contract_address_const::<'ADMIN'>()
