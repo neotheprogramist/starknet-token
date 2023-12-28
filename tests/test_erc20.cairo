@@ -5,7 +5,7 @@ use tests::utils::constants::{OWNER, SPENDER, RECIPIENT, SUPPLY, VALUE, ZERO};
 
 fn deploy_contract(name: felt252) -> ContractAddress {
     let contract = declare(name);
-    contract.deploy(@array![OWNER().into(), ZERO().into()]).unwrap()
+    contract.deploy(@array![OWNER().into(), ZERO().into(), 0, 0, 1, 0, 0, 0, 1, 0]).unwrap()
 }
 
 #[test]

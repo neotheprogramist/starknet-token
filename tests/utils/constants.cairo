@@ -14,6 +14,7 @@ const NEW_PUBKEY: felt252 = 'NEW_PUBKEY';
 const SALT: felt252 = 'SALT';
 const SUCCESS: felt252 = 123123;
 const FAILURE: felt252 = 456456;
+const UNIT: u256 = 1_000_000_000_000_000_000_u256;
 
 
 fn ADMIN() -> ContractAddress {

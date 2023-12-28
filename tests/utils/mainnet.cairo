@@ -6,6 +6,12 @@ fn JEDISWAP_CONTRACT() -> ContractAddress {
 fn JEDISWAP_DEPLOYER_CONTRACT() -> ContractAddress {
     contract_address_const::<0x041fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023>()
 }
+fn JEDISWAP_FACTORY_CONTRACT() -> ContractAddress {
+    contract_address_const::<0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd>()
+}
+fn JEDISWAP_ETH_USDC_PAIR_CONTRACT() -> ContractAddress {
+    contract_address_const::<0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a>()
+}
 
 fn ETH_TOKEN_CONTRACT() -> ContractAddress {
     contract_address_const::<0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7>()
