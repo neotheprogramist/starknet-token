@@ -117,7 +117,7 @@ fn test_swap_usdc_to_eth() {
 fn test_create_new_pair() {
     let contract = declare('Erc20Token');
     let custom_token_address = contract
-        .deploy(@array![OWNER().into(), ZERO().into(), 0, 0, 1, 0, 0, 0, 1, 0])
+        .deploy(@array!['TestToken', 'TST', OWNER().into(), ZERO().into(), 0, 0, 1, 0, 0, 0, 1, 0])
         .unwrap();
 
     let eth_token_address = ETH_TOKEN_CONTRACT();

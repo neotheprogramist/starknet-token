@@ -76,6 +76,8 @@ mod Erc20Token {
     #[constructor]
     fn constructor(
         ref self: ContractState,
+        name: felt252,
+        symbol: felt252,
         owner: ContractAddress,
         swap_router: ContractAddress,
         deduction_numer: u256,
@@ -83,7 +85,7 @@ mod Erc20Token {
         burn_numer: u256,
         burn_denom: u256,
     ) {
-        self.erc20.initializer('MyToken', 'MTK');
+        self.erc20.initializer(name, symbol);
         self.ownable.initializer(owner);
         self.swap_router.write(swap_router);
         self.deduction_numer.write(deduction_numer);
