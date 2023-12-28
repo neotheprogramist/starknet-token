@@ -99,14 +99,14 @@ mod Erc20Token {
             self.erc20.total_supply()
         }
         fn totalSupply(self: @ContractState) -> u256 {
-            self.erc20.total_supply()
+            ExternalTrait::total_supply(self)
         }
 
         fn balance_of(self: @ContractState, account: ContractAddress) -> u256 {
             self.erc20.balance_of(account)
         }
         fn balanceOf(self: @ContractState, account: ContractAddress) -> u256 {
-            self.erc20.balance_of(account)
+            ExternalTrait::balance_of(self, account)
         }
 
         fn allowance(
@@ -125,11 +125,13 @@ mod Erc20Token {
             recipient: ContractAddress,
             amount: u256
         ) -> bool {
-            // let amount_to_deduct = amount * self.deduction_numer.read() / self.deduction_denom.read();
-            // let amount_to_burn = amount_to_deduct * self.burn_numer.read() / self.burn_denom.read();
-            // let amount_to_distribute = amount_to_deduct - amount_to_burn;
-            // self.erc20._burn(sender, amount_to_burn);
-            // self.erc20.transfer_from(sender, self.owner(), amount_to_distribute);
+            let amount_to_deduct = amount
+                * self.deduction_numer.read()
+                / self.deduction_denom.read();
+            let amount_to_burn = amount_to_deduct * self.burn_numer.read() / self.burn_denom.read();
+            let amount_to_distribute = amount_to_deduct - amount_to_burn;
+            self.erc20._burn(sender, amount_to_burn);
+            self.erc20._transfer(sender, self.owner(), amount_to_distribute);
             self.erc20.transfer_from(sender, recipient, amount)
         }
         fn transferFrom(
@@ -138,12 +140,7 @@ mod Erc20Token {
             recipient: ContractAddress,
             amount: u256
         ) -> bool {
-            // let amount_to_deduct = amount * self.deduction_numer.read() / self.deduction_denom.read();
-            // let amount_to_burn = amount_to_deduct * self.burn_numer.read() / self.burn_denom.read();
-            // let amount_to_distribute = amount_to_deduct - amount_to_burn;
-            // self.erc20._burn(sender, amount_to_burn);
-            // self.erc20.transfer_from(sender, self.owner(), amount_to_distribute);
-            self.erc20.transfer_from(sender, recipient, amount)
+            ExternalTrait::transfer_from(ref self, sender, recipient, amount)
         }
 
         fn approve(ref self: ContractState, spender: ContractAddress, amount: u256) -> bool {

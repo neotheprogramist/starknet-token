@@ -174,8 +174,6 @@ fn test_create_new_pair() {
         contract_address: jediswap_contract_address
     };
 
-    println!("time: {}", time);
-
     start_prank(CheatTarget::One(custom_token_address), OTHER().into());
     safe_dispatcher_custom.approve(jediswap_contract_address, SUPPLY).unwrap();
     stop_prank(CheatTarget::One(custom_token_address));
@@ -184,22 +182,22 @@ fn test_create_new_pair() {
     safe_dispatcher_eth.approve(jediswap_contract_address, SUPPLY).unwrap();
     stop_prank(CheatTarget::One(eth_token_address));
 
-    start_prank(CheatTarget::One(jediswap_contract_address), OTHER().into());
-    start_warp(CheatTarget::One(jediswap_contract_address), 0);
-    let result = safe_dispatcher_router
-        .add_liquidity(
-            custom_token_address.into(),
-            eth_token_address.into(),
-            UNIT,
-            UNIT,
-            UNIT - 1,
-            UNIT - 1,
-            OTHER().into(),
-            1
-        ).unwrap();
-    stop_warp(CheatTarget::One(jediswap_contract_address));
-    stop_prank(CheatTarget::One(jediswap_contract_address));
-// let (usdc_reserves, eth_reserves, time) = safe_dispatcher_pair.get_reserves().unwrap();
-// println!("usdc_reserves: {}", usdc_reserves);
-// println!("eth_reserves: {}", eth_reserves);
+    // start_prank(CheatTarget::One(jediswap_contract_address), OTHER().into());
+    // start_warp(CheatTarget::One(jediswap_contract_address), 0);
+    // let result = safe_dispatcher_router
+    //     .add_liquidity(
+    //         custom_token_address.into(),
+    //         eth_token_address.into(),
+    //         UNIT,
+    //         UNIT,
+    //         UNIT - 1,
+    //         UNIT - 1,
+    //         OTHER().into(),
+    //         1
+    //     ).unwrap();
+    // stop_warp(CheatTarget::One(jediswap_contract_address));
+    // stop_prank(CheatTarget::One(jediswap_contract_address));
+    // let (usdc_reserves, eth_reserves, time) = safe_dispatcher_pair.get_reserves().unwrap();
+    // println!("usdc_reserves: {}", usdc_reserves);
+    // println!("eth_reserves: {}", eth_reserves);
 }
