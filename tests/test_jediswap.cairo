@@ -146,17 +146,17 @@ fn test_create_new_pair() {
     assert(balance_custom_after == SUPPLY, 'Invalid balance');
     assert(balance_eth_after == SUPPLY, 'Invalid balance');
 
-    let safe_dispatcher = IFactorySafeDispatcher { contract_address: JEDISWAP_FACTORY_CONTRACT() };
+    let safe_dispatcher_factory = IFactorySafeDispatcher { contract_address: JEDISWAP_FACTORY_CONTRACT() };
 
-    let pair_address = safe_dispatcher
+    let pair_address = safe_dispatcher_factory
         .create_pair(custom_token_address.into(), eth_token_address.into())
         .unwrap();
 
-    let safe_dispatcher = IPairSafeDispatcher {
+    let safe_dispatcher_pair = IPairSafeDispatcher {
         contract_address: pair_address.try_into().unwrap()
     };
 
-    let (usdc_reserves, eth_reserves, time) = safe_dispatcher.get_reserves().unwrap();
+    let (usdc_reserves, eth_reserves, time) = safe_dispatcher_pair.get_reserves().unwrap();
 
     assert(usdc_reserves == 0, 'Invalid usdc reserves');
     assert(eth_reserves == 0, 'Invalid eth reserves');
