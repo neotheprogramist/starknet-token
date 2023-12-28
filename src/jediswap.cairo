@@ -1,13 +1,22 @@
 // SPDX-License-Identifier: MIT
 use starknet::ContractAddress;
 
-// ​func swap_exact_tokens_for_tokens(amountIn: Uint256, amountOutMin: Uint256, path_len: felt, path: felt*, to: felt, deadline: felt) -> (amounts_len: felt, amounts: Uint256*):
-
 #[starknet::interface]
 trait IRouter<TContractState> {
     fn factory(self: @TContractState) -> felt252;
     fn quote(self: @TContractState, amount_a: u256, reserve_a: u256, reserve_b: u256) -> u256;
 
+    fn add_liquidity(
+        ref self: TContractState,
+        token_a: felt252,
+        token_b: felt252,
+        amount_a_desired: u256,
+        amount_b_desired: u256,
+        amount_a_min: u256,
+        amount_b_min: u256,
+        to: felt252,
+        deadline: felt252
+    ) -> (u256, u256, u256);
     fn swap_exact_tokens_for_tokens(
         ref self: TContractState,
         amount_in: u256,

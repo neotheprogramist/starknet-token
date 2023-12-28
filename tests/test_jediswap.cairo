@@ -1,8 +1,11 @@
+use core::result::ResultTrait;
 use core::array::ArrayTrait;
 use core::traits::TryInto;
 use core::option::OptionTrait;
 use starknet::{contract_address_const, ContractAddress, testing};
-use snforge_std::{declare, start_prank, stop_prank, ContractClassTrait, CheatTarget};
+use snforge_std::{
+    declare, start_prank, stop_prank, start_warp, stop_warp, ContractClassTrait, CheatTarget
+};
 use starknet_token::{
     IStarkNetErc20TokenSafeDispatcher, IStarkNetErc20TokenSafeDispatcherTrait,
     erc20::{IErc20TokenSafeDispatcher, IErc20TokenSafeDispatcherTrait},
@@ -113,7 +116,9 @@ fn test_swap_usdc_to_eth() {
 #[fork("SN_MAINNET")]
 fn test_create_new_pair() {
     let contract = declare('Erc20Token');
-    let custom_token_address = contract.deploy(@array![OWNER().into(), ZERO().into(), 0, 0, 1, 0, 0, 0, 1, 0]).unwrap();
+    let custom_token_address = contract
+        .deploy(@array![OWNER().into(), ZERO().into(), 0, 0, 1, 0, 0, 0, 1, 0])
+        .unwrap();
 
     let eth_token_address = ETH_TOKEN_CONTRACT();
     let eth_token_minter_address = ETH_TOKEN_PERMISSIONED_MINT();
@@ -146,7 +151,9 @@ fn test_create_new_pair() {
     assert(balance_custom_after == SUPPLY, 'Invalid balance');
     assert(balance_eth_after == SUPPLY, 'Invalid balance');
 
-    let safe_dispatcher_factory = IFactorySafeDispatcher { contract_address: JEDISWAP_FACTORY_CONTRACT() };
+    let safe_dispatcher_factory = IFactorySafeDispatcher {
+        contract_address: JEDISWAP_FACTORY_CONTRACT()
+    };
 
     let pair_address = safe_dispatcher_factory
         .create_pair(custom_token_address.into(), eth_token_address.into())
@@ -160,4 +167,39 @@ fn test_create_new_pair() {
 
     assert(usdc_reserves == 0, 'Invalid usdc reserves');
     assert(eth_reserves == 0, 'Invalid eth reserves');
+
+    let jediswap_contract_address = JEDISWAP_CONTRACT();
+
+    let safe_dispatcher_router = IRouterSafeDispatcher {
+        contract_address: jediswap_contract_address
+    };
+
+    println!("time: {}", time);
+
+    start_prank(CheatTarget::One(custom_token_address), OTHER().into());
+    safe_dispatcher_custom.approve(jediswap_contract_address, SUPPLY).unwrap();
+    stop_prank(CheatTarget::One(custom_token_address));
+
+    start_prank(CheatTarget::One(eth_token_address), OTHER().into());
+    safe_dispatcher_eth.approve(jediswap_contract_address, SUPPLY).unwrap();
+    stop_prank(CheatTarget::One(eth_token_address));
+
+    start_prank(CheatTarget::One(jediswap_contract_address), OTHER().into());
+    start_warp(CheatTarget::One(jediswap_contract_address), 0);
+    let result = safe_dispatcher_router
+        .add_liquidity(
+            custom_token_address.into(),
+            eth_token_address.into(),
+            UNIT,
+            UNIT,
+            UNIT - 1,
+            UNIT - 1,
+            OTHER().into(),
+            1
+        ).unwrap();
+    stop_warp(CheatTarget::One(jediswap_contract_address));
+    stop_prank(CheatTarget::One(jediswap_contract_address));
+// let (usdc_reserves, eth_reserves, time) = safe_dispatcher_pair.get_reserves().unwrap();
+// println!("usdc_reserves: {}", usdc_reserves);
+// println!("eth_reserves: {}", eth_reserves);
 }
