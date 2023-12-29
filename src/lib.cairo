@@ -1,5 +1,6 @@
 use starknet::ContractAddress;
 
+mod erc20_modified;
 mod erc20;
 mod jediswap;
 

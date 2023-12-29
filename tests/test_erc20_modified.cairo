@@ -1,6 +1,6 @@
 use starknet::{contract_address_const, ContractAddress, testing};
 use snforge_std::{declare, start_prank, stop_prank, ContractClassTrait, CheatTarget};
-use starknet_token::erc20::{IErc20TokenSafeDispatcher, IErc20TokenSafeDispatcherTrait};
+use starknet_token::erc20_modified::{IErc20TokenSafeDispatcher, IErc20TokenSafeDispatcherTrait};
 use tests::utils::constants::{OWNER, SPENDER, RECIPIENT, SUPPLY, VALUE, ZERO};
 
 fn deploy_contract(name: felt252) -> ContractAddress {
