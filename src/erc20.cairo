@@ -4,6 +4,7 @@
 mod FungibleToken {
     use openzeppelin::token::erc20::ERC20Component;
     use openzeppelin::access::ownable::OwnableComponent;
+    use starknet::get_caller_address;
     use starknet::ContractAddress;
 
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
@@ -15,6 +16,11 @@ mod FungibleToken {
     impl ERC20Impl = ERC20Component::ERC20Impl<ContractState>;
     #[abi(embed_v0)]
     impl ERC20CamelOnlyImpl = ERC20Component::ERC20CamelOnlyImpl<ContractState>;
+    #[abi(embed_v0)]
+    impl SafeAllowanceImpl = ERC20Component::SafeAllowanceImpl<ContractState>;
+    #[abi(embed_v0)]
+    impl SafeAllowanceCamelImpl =
+        ERC20Component::SafeAllowanceCamelImpl<ContractState>;
     #[abi(embed_v0)]
     impl OwnableImpl = OwnableComponent::OwnableImpl<ContractState>;
     #[abi(embed_v0)]
@@ -52,6 +58,11 @@ mod FungibleToken {
     #[generate_trait]
     #[external(v0)]
     impl ExternalImpl of ExternalTrait {
+        fn burn(ref self: ContractState, value: u256) {
+            let caller = get_caller_address();
+            self.erc20._burn(caller, value);
+        }
+
         fn mint(ref self: ContractState, recipient: ContractAddress, amount: u256) {
             self.ownable.assert_only_owner();
             self.erc20._mint(recipient, amount);
