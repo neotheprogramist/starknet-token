@@ -15,9 +15,7 @@ def parse_string_variant(string: str) -> str:
             return f"{value:#x}"
         except ValueError:
             pass
-    if string.isalnum():
-        return f"0x{bytes(string, "ascii").hex()}"
-    raise ValueError(f"Unknown string variant: {string}")
+    return f"0x{bytes(string, "ascii").hex()}"
 
 
 def main():
